@@ -7,7 +7,7 @@ on:
 
 jobs:
   build-and-deploy:
-    runs-on: debian-latest # Change to debian-latest
+    runs-on: self-hosted, linux, debian
 
     steps:
       - name: Checkout code
