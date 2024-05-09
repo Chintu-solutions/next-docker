@@ -31,5 +31,5 @@ jobs:
             docker pull ${{ secrets.DOCKER_USERNAME }}/latest
             docker stop interesting_matsumoto||true
             docker rm interesting_matsumoto||true
-            docker run -d --name interesting_matsumoto -p ${{ env.PORT_MAPPING }}:${{ env.CONTAINER_PORT }} ${{ env.IMAGE_NAME }}latest
+            docker run -d --name interesting_matsumoto -p 3000:3000 ${{ env.IMAGE_NAME }}latest
           "
