@@ -4,8 +4,6 @@ on:
   pull_request:
     branches:
       - main
-  deployment:
-    types: [created, status]
 jobs:
   build:
     runs-on: self-hosted
