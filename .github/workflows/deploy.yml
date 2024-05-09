@@ -16,7 +16,7 @@ jobs:
       - name: Build and push Docker image
         env:
           DOCKER_IMAGE_NAME: ${{ env.DOCKER_IMAGE_NAME }}
-          IMAGE_TAG: latest || ${{ env.IMAGE_TAG }}
+          IMAGE_TAG: ${{ env.IMAGE_TAG }} || latest
         run: |
           docker build -t ${{ env.DOCKER_IMAGE_NAME }}:${{ env.IMAGE_TAG }} .
           docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
