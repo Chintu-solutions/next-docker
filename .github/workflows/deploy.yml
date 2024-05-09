@@ -29,7 +29,7 @@ jobs:
           ssh ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }} "
             docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }} docker.io
             docker pull ${{ secrets.DOCKER_USERNAME }}/latest
-            docker stop ${{ env.CONTAINER_NAME }}
-            docker rm ${{ env.CONTAINER_NAME }}
+            docker stop ${{ env.CONTAINER_NAME }} || true
+            docker rm ${{ env.CONTAINER_NAME }} || true
             docker run -d --name ${{ env.CONTAINER_NAME }} -p ${{ env.PORT_MAPPING }}:${{ env.CONTAINER_PORT }} ${{ env.IMAGE_NAME }}latest
           "
