@@ -3,11 +3,11 @@ name: Deploy Next.js App
 on:
   push:
     branches:
-      - main # Replace with your desired branch name
+      - main 
 
 jobs:
   build-and-deploy:
-    runs-on: self-hosted, linux, debian
+    runs-on: self-hosted
 
     steps:
       - name: Checkout code
