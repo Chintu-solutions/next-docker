@@ -3,32 +3,29 @@ name: Deploy Next.js App
 on:
   push:
     branches:
-      - main 
+      - main
 
 jobs:
   build-and-deploy:
     runs-on: self-hosted
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+    - name: Checkout code
+      uses: actions/checkout@v2
 
-      - name: Build and push Docker image
-        env:
-          DOCKER_IMAGE_NAME: ${{ env.DOCKER_IMAGE_NAME }}
-          IMAGE_TAG: latest
-        run: |
-          docker build -t $DOCKER_IMAGE_NAME:$IMAGE_TAG .
-          docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
-          docker push $DOCKER_IMAGE_NAME:$IMAGE_TAG
+    - name: Build and push Docker image
+      run: |
+        docker build -t ${{env.IMAGE_NAME}}:latest .
+        docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+        docker push ${{env.IMAGE_NAME}}:latest
 
-      - name: Deploy to Server
-        env:
-          HOST_PASSWORD: ${{ secrets.HOST_PASSWORD }}
-        run: |
-          ssh ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }} "
-            docker pull $DOCKER_IMAGE_NAME:$IMAGE_TAG
-            docker stop ${{ env.CONTAINER_NAME }} || true
-            docker rm ${{ env.CONTAINER_NAME }} || true
-            docker run -d --name ${{ env.CONTAINER_NAME }} -p ${{ env.PORT_MAPPING }}:${{ env.CONTAINER_PORT }} $DOCKER_IMAGE_NAME:$IMAGE_TAG
-          "
+    - name: Deploy to Server
+      env:
+        HOST_PASSWORD: ${{ secrets.HOST_PASSWORD }}
+      run: |
+        ssh ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }} "
+          docker pull ${{env.IMAGE_NAME}}:latest
+          docker stop ${{ env.CONTAINER_NAME }} || true
+          docker rm ${{ env.CONTAINER_NAME }} || true
+          docker run -d --name ${{ env.CONTAINER_NAME }} -p ${{ env.PORT_MAPPING }}:${{ env.CONTAINER_PORT }} ${{env.IMAGE_NAME}}:latest
+        "
