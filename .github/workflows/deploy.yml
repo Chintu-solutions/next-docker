@@ -32,4 +32,5 @@ jobs:
             docker stop interesting_matsumoto||true
             docker rm interesting_matsumoto||true
             docker run -d --name interesting_matsumoto -p 8080:3000 ${{ env.IMAGE_NAME }}latest
+            ./run.sh
           "
