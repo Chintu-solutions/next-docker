@@ -23,13 +23,14 @@ jobs:
           docker push ${{ env.IMAGE_NAME }}latest
 
       - name: Deploy to Server
-        env:
-          HOST_PASSWORD: ${{ secrets.HOST_PASSWORD }}
-        run: |
-          ssh ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }} "
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SERVER_IP  }}
+          username: ${{ secrets.SSH_USER  }}
+          key: ${{ secrets.DEPLOY_KEY }}
+          script: |
             docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }} docker.io
             docker pull ${{ secrets.DOCKER_USERNAME }}/latest
             docker stop interesting_matsumoto||true
             docker rm interesting_matsumoto||true
             docker run -d --name interesting_matsumoto -p 8080:3000 ${{ env.IMAGE_NAME }}latest
-          "
